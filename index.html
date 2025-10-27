@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Webhook Tools</title>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/lucide-vue-next@0.294.0/dist/umd/lucide-vue-next.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- Global Styles (diambil dari Fitur 3) --- */
+        body {
+            background: linear-gradient(135deg, #000000, #1a1a2e, #16213e);
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif; /* Font default dari Fitur 3 */
+            min-height: 100vh;
+            display: flex; /* Menggunakan flex untuk memusatkan konten */
+            justify-content: center;
+            align-items: center;
+            background-size: 400% 400%;
+            animation: gradientShift 30s ease infinite alternate-reverse;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Kontainer Halaman (untuk navigasi) --- */
+        .page {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Style Tombol Kembali (Global) --- */
+        .back-button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6c757d; /* Abu-abu */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+            margin-top: 15px; /* Memberi jarak */
+            box-sizing: border-box;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+        
+        /* --- Style Credit Footer --- */
+        .credit-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.875rem;
+            width: 100%;
+            color: #888; /* Default (untuk container putih) */
+        }
+        /* Warna kredit untuk tema gelap (Menu) */
+        #pageMainMenu .credit-footer {
+            color: #a0aec0;
+        }
+
+        /* --- Style Menu Utama --- */
+        #pageMainMenu .menu-card {
+            background: #2d3748;
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5), 0 0 40px rgba(0, 123, 255, 0.3);
+            border: 1px solid rgba(0, 123, 255, 0.2);
+            color: #ffffff;
+        }
+        #pageMainMenu h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+        #pageMainMenu .menu-button {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        #pageMainMenu .menu-button:last-child {
+            margin-bottom: 0;
+        }
+        #pageMainMenu .btn-discord-send {
+            background-color: #5865F2; /* Discord Blurple */
+            color: white;
+        }
+        #pageMainMenu .btn-discord-send:hover { background-color: #4752c4; }
+        
+        #pageMainMenu .btn-telegram {
+            background-color: #0088cc; /* Telegram Blue */
+            color: white;
+        }
+        #pageMainMenu .btn-telegram:hover { background-color: #0077b3; }
+        
+        #pageMainMenu .btn-discord-delete {
+            background-color: #e53e3e; /* Deleter Red */
+            color: white;
+        }
+        #pageMainMenu .btn-discord-delete:hover { background-color: #c53030; }
+
+
+        /* --- 
+         * STYLES UNTUK FITUR 1: Discord Sender 
+         * (Diberi prefix #pageDiscordSender)
+        --- */
+        #pageDiscordSender .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            /* Ganti font agar konsisten dengan style aslinya */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        #pageDiscordSender h2 {
+            text-align: center;
+            margin-top: 0;
+            color: #333;
+        }
+        #pageDiscordSender .form-group { margin-bottom: 20px; }
+        #pageDiscordSender .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        #pageDiscordSender .form-group input[type="url"],
+        #pageDiscordSender .form-group input[type="number"],
+        #pageDiscordSender .form-group textarea,
+        #pageDiscordSender .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        #pageDiscordSender .form-group textarea { min-height: 100px; resize: vertical; }
+        #pageDiscordSender .form-group input[type="file"] { padding: 5px; }
+        #pageDiscordSender button[type="submit"] { /* Selector dibuat lebih spesifik */
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+        #pageDiscordSender button[type="submit"]:hover { background-color: #0056b3; }
+        #pageDiscordSender button[type="submit"]:disabled { background-color: #a0a0a0; cursor: not-allowed; }
+        #pageDiscordSender #status {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #555;
+        }
+        #pageDiscordSender #status.success { color: green; }
+        #pageDiscordSender #status.error { color: red; }
+
+
+        /* --- 
+         * STYLES UNTUK FITUR 2: Telegram Spammer 
+         * (Diberi prefix #pageTelegramSpammer)
+        --- */
+        #pageTelegramSpammer .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            /* Ganti font agar konsisten dengan style aslinya */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        #pageTelegramSpammer h2 {
+            text-align: center;
+            color: #333;
+            margin-top: 0;
+        }
+        #pageTelegramSpammer .form-group { margin-bottom: 20px; }
+        #pageTelegramSpammer .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        #pageTelegramSpammer .form-group input[type="text"],
+        #pageTelegramSpammer .form-group input[type="file"],
+        #pageTelegramSpammer .form-group input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box; 
+        }
+        #pageTelegramSpammer .form-group input[type="file"] { padding: 5px; }
+        #pageTelegramSpammer button[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        #pageTelegramSpammer button[type="submit"]:hover { background-color: #0077b3; }
+        #pageTelegramSpammer button[type="submit"]:disabled { background-color: #ccc; cursor: not-allowed; }
+        #pageTelegramSpammer #status {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            /* Pastikan warna teks terlihat di container putih */
+            color: #333;
+        }
+        #pageTelegramSpammer .warning {
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #8a6d3b;
+            font-size: 14px;
+        }
+
+        /* --- 
+         * STYLES UNTUK FITUR 3: Discord Deleter 
+         * (Diberi prefix #pageDiscordDeleter)
+        --- */
+        #pageDiscordDeleter .webhook-deleter {
+            /* Style ini awalnya ada di body, sekarang jadi pembungkus */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
+        #pageDiscordDeleter .card {
+            background: #2d3748;
+            border-radius: 1rem;
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.5), 0 0 40px rgba(0, 123, 255, 0.3), 0 0 60px rgba(0, 123, 255, 0.1);
+            border: 1px solid rgba(0, 123, 255, 0.2);
+        }
+        #pageDiscordDeleter .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+        #pageDiscordDeleter .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        #pageDiscordDeleter label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+        #pageDiscordDeleter input {
+            width: 100%;
+            padding: 0.75rem;
+            box-sizing: border-box;
+            background: #4a5568;
+            border: 1px solid #718096;
+            border-radius: 0.5rem;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        #pageDiscordDeleter input:focus {
+            outline: none;
+            border-color: #63b3ed;
+            box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.2), 0 0 10px rgba(99, 179, 237, 0.5);
+        }
+        #pageDiscordDeleter .delete-btn {
+            background-color: #e53e3e;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 0 10px rgba(229, 62, 62, 0.5);
+            /* Modifikasi agar konsisten */
+            width: 100%;
+            padding: 0.75rem;
+            box-sizing: border-box;
+        }
+        #pageDiscordDeleter .delete-btn:hover:not(:disabled) {
+            background-color: #c53030;
+            box-shadow: 0 0 15px rgba(229, 62, 62, 0.7);
+        }
+        #pageDiscordDeleter .delete-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        #pageDiscordDeleter .alert {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        #pageDiscordDeleter .success {
+            background-color: #2d5a2d;
+            color: #c6f6d5;
+            border: 1px solid #68d391;
+        }
+        #pageDiscordDeleter .error {
+            background-color: #5a2d2d;
+            color: #feb2b2;
+            border: 1px solid #fc8181;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        #pageDiscordDeleter .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            color: currentColor;
+            margin-left: auto;
+        }
+        #pageDiscordDeleter .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+            color: #a0aec0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #pageDiscordDeleter .footer a {
+            color: #a0aec0;
+            margin-left: 0.5rem;
+        }
+        #pageDiscordDeleter .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.5rem;
+        }
+        @media (max-width: 640px) {
+            #pageDiscordDeleter .card { padding: 1.5rem; }
+            #pageDiscordSender .container { padding: 1.5rem; }
+            #pageTelegramSpammer .container { padding: 1.5rem; }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        #pageDiscordDeleter .animate-spin { animation: spin 1s linear infinite; }
+        #pageDiscordDeleter #webhook-url { font-family: 'Inter', sans-serif; }
+        /* Transisi Vue */
+        #pageDiscordDeleter .fade-enter-active,
+        #pageDiscordDeleter .fade-leave-active {
+          transition: opacity 0.5s ease;
+        }
+        #pageDiscordDeleter .fade-enter-from,
+        #pageDiscordDeleter .fade-leave-to {
+          opacity: 0;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="pageMainMenu" class="page" style="display: flex;">
+        <div class="menu-card">
+            <h2>Webhook Tools 🛠️</h2>
+            <button class="menu-button btn-discord-send" onclick="showPage('pageDiscordSender')">
+                🚀 Discord Webhook Sender
+            </button>
+            <button class="menu-button btn-telegram" onclick="showPage('pageTelegramSpammer')">
+                ⚡ Telegram Webhook Spammer
+            </button>
+            <button class="menu-button btn-discord-delete" onclick="showPage('pageDiscordDeleter')">
+                ❌ Discord Webhook Deleter
+            </button>
+            <p class="credit-footer">CREATED BY ALIEN SAMP</p>
+        </div>
+    </div>
+
+    <div id="pageDiscordSender" class="page" style="display: none;">
+        <div class="container">
+            <h2>Webhook Sender 🚀</h2>
+            <form id="webhookForm">
+                <div class="form-group">
+                    <label for="webhookUrl">URL Webhook:</label>
+                    <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="messageText">Teks Pesan (Opsional jika ada file):</label>
+                    <textarea id="messageText" rows="4" placeholder="Ketik pesan Anda..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fileUpload">Upload File (Opsional):</label>
+                    <input type="file" id="fileUpload">
+                </div>
+                
+                <div class="form-group">
+                    <label for="messageCount">Jumlah Kirim:</label>
+                    <input type="number" id="messageCount" value="1" min="1" required>
+                </div>
+                
+                <button type="submit" id="submitButton">Kirim</button>
+            </form>
+            <p id="status"></p>
+            
+            <p class="credit-footer">CREATED BY ALIEN SAMP</p>
+            
+            <button class="back-button" onclick="showPage('pageMainMenu')">Kembali ke Menu</button>
+        </div>
+        
+        <script>
+            document.getElementById('webhookForm').addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const url = document.getElementById('webhookUrl').value;
+                const text = document.getElementById('messageText').value;
+                const fileInput = document.getElementById('fileUpload');
+                const file = fileInput.files[0];
+                const count = parseInt(document.getElementById('messageCount').value, 10);
+                
+                const statusEl = document.querySelector('#pageDiscordSender #status'); // Selector lebih spesifik
+                const submitButton = document.getElementById('submitButton');
+
+                if (!text && !file) {
+                    statusEl.textContent = 'Error: Masukkan teks atau upload file untuk dikirim.';
+                    statusEl.className = 'error';
+                    return;
+                }
+
+                submitButton.disabled = true;
+                submitButton.textContent = 'Mengirim...';
+                statusEl.textContent = 'Memulai proses pengiriman...';
+                statusEl.className = '';
+
+                let successCount = 0;
+                let hasError = false;
+
+                for (let i = 0; i < count; i++) {
+                    statusEl.textContent = `Mengirim pesan ke-${i + 1} dari ${count}...`;
+
+                    try {
+                        let body;
+                        let headers = {};
+
+                        if (file) {
+                            body = new FormData();
+                            body.append('file', file);
+                            if (text) {
+                                body.append('payload_json', JSON.stringify({ content: text }));
+                            }
+                        } else {
+                            headers['Content-Type'] = 'application/json';
+                            body = JSON.stringify({ content: text });
+                        }
+
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: headers,
+                            body: body
+                        });
+
+                        if (response.ok) {
+                            successCount++;
+                        } else {
+                            hasError = true;
+                            console.error(`Gagal kirim ke-${i + 1}: ${response.status} ${response.statusText}`);
+                            const errorData = await response.json().catch(() => null);
+                            if (errorData) console.error('Detail Error:', errorData);
+                        }
+
+                    } catch (error) {
+                        hasError = true;
+                        console.error(`Error pada kiriman ke-${i + 1}:`, error);
+                        statusEl.textContent = `Error: ${error.message}. Pengiriman dihentikan.`;
+                        statusEl.className = 'error';
+                        break;
+                    }
+
+                    if (count > 1 && i < count - 1) {
+                        await new Promise(resolve => setTimeout(resolve, 500));
+                    }
+                }
+
+                if (hasError) {
+                    statusEl.textContent = `Selesai. Berhasil terkirim ${successCount} dari ${count}. Cek console (F12) untuk detail error.`;
+                    statusEl.className = 'error';
+                } else {
+                    statusEl.textContent = `Selesai! Berhasil mengirim ${successCount} pesan.`;
+                    statusEl.className = 'success';
+                }
+
+                submitButton.disabled = false;
+                submitButton.textContent = 'Kirim';
+                fileInput.value = '';
+            });
+        </script>
+    </div>
+
+    <div id="pageTelegramSpammer" class="page" style="display: none;">
+        <div class="container">
+            <h2>Kirim Foto/Video ke Bot Telegram</h2>
+
+            <div class="warning">
+                <strong>Note:</strong> Bantai semua keylog.<br><br>
+                <strong>Peringatan Kecepatan:</strong> Mode ini sangat cepat tetapi sangat berisiko terkena <strong>Rate Limit</strong> dari Telegram, yang akan menyebabkan kegagalan kirim. Gunakan dengan risiko Anda sendiri.
+            </div>
+
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="token">Token Bot:</label>
+                    <input type="text" id="token" placeholder="Contoh: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="chatId">Chat ID:</label>
+                    <input type="text" id="chatId" placeholder="Contoh: 987654321" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fileInput">Pilih File (Foto/Video):</label>
+                    <input type="file" id="fileInput" accept="image/*,video/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="caption">Keterangan (Opsional):</label>
+                    <input type="text" id="caption" placeholder="Tulis caption di sini...">
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlahKirim">Jumlah Kirim:</label>
+                    <input type="number" id="jumlahKirim" value="1" min="1" required>
+                </div>
+                <button type="submit" id="sendButton">Kirim (Sangat Cepat)</button>
+            </form>
+
+            <div id="status"></div>
+
+            <p class="credit-footer">CREATED BY ALIEN SAMP</p>
+
+            <button class="back-button" onclick="showPage('pageMainMenu')">Kembali ke Menu</button>
+        </div>
+
+        <script>
+            document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+                event.preventDefault(); 
+
+                const token = document.getElementById('token').value;
+                const chatId = document.getElementById('chatId').value;
+                const fileInput = document.getElementById('fileInput');
+                const caption = document.getElementById('caption').value;
+                const jumlahKirim = parseInt(document.getElementById('jumlahKirim').value, 10);
+                
+                const statusEl = document.querySelector('#pageTelegramSpammer #status'); // Selector lebih spesifik
+                const sendButton = document.getElementById('sendButton');
+
+                if (!token || !chatId || fileInput.files.length === 0 || !jumlahKirim || jumlahKirim < 1) {
+                    statusEl.textContent = 'Harap isi Token, Chat ID, pilih file, dan pastikan jumlah kirim minimal 1.';
+                    statusEl.style.color = 'red';
+                    return;
+                }
+
+                const file = fileInput.files[0];
+                const fileType = file.type;
+                let endpoint = '';
+                let formDataField = '';
+
+                if (fileType.startsWith('image/')) {
+                    endpoint = 'sendPhoto';
+                    formDataField = 'photo';
+                } else if (fileType.startsWith('video/')) {
+                    endpoint = 'sendVideo';
+                    formDataField = 'video';
+                } else {
+                    statusEl.textContent = 'Tipe file tidak didukung. Harap pilih foto atau video.';
+                    statusEl.style.color = 'red';
+                    return;
+                }
+
+                const apiUrl = `https://api.telegram.org/bot${token}/${endpoint}`;
+
+                const formData = new FormData();
+                formData.append('chat_id', chatId);
+                formData.append(formDataField, file, file.name);
+                if (caption) {
+                    formData.append('caption', caption);
+                }
+
+                statusEl.textContent = 'Mempersiapkan pengiriman... ⏳';
+                statusEl.style.color = 'blue';
+                sendButton.disabled = true;
+
+                let berhasilCount = 0;
+                let gagalCount = 0;
+
+                try {
+                    const promises = [];
+                    statusEl.textContent = `Mempersiapkan ${jumlahKirim} kiriman... ⏳`;
+
+                    for (let i = 0; i < jumlahKirim; i++) {
+                        const promise = fetch(apiUrl, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        promises.push(promise);
+                    }
+
+                    statusEl.textContent = `Mengirim ${jumlahKirim} file secara bersamaan... ⏳ (Ini mungkin butuh waktu)`;
+
+                    const results = await Promise.allSettled(promises);
+
+                    await Promise.all(results.map(async (result, index) => {
+                        if (result.status === 'fulfilled') {
+                            try {
+                                const data = await result.value.json();
+                                if (data.ok) {
+                                    berhasilCount++;
+                                } else {
+                                    gagalCount++;
+                                    console.warn(`Gagal kirim (API Error) ke-${index + 1}: ${data.description}`);
+                                }
+                            } catch (jsonError) {
+                                gagalCount++;
+                                console.error(`Gagal parsing JSON ke-${index + 1}:`, jsonError);
+                            }
+                        } else {
+                            gagalCount++;
+                            console.error(`Gagal kirim (Network Error) ke-${index + 1}:`, result.reason);
+                        }
+                    }));
+
+                    if (gagalCount > 0) {
+                        statusEl.textContent = `⚠️ Selesai: ${berhasilCount} berhasil, ${gagalCount} gagal dari ${jumlahKirim}. (Sangat mungkin terkena rate limit. Cek console.)`;
+                        statusEl.style.color = '#db7c00'; // Oranye
+                    } else {
+                        statusEl.textContent = `✅ Berhasil terkirim ${berhasilCount} kali!`;
+                        statusEl.style.color = 'green';
+                    }
+
+                } catch (mainError) {
+                    console.error('Error utama:', mainError);
+                    statusEl.textContent = `❌ Terjadi error tak terduga: ${mainError.message}`;
+                    statusEl.style.color = 'red';
+                } finally {
+                    sendButton.disabled = false;
+                }
+            });
+        </script>
+    </div>
+
+    <div id="pageDiscordDeleter" class="page" style="display: none;">
+        <div id="app">
+            </div>
+
+        <script>
+            // Pastikan variabel Vue dan Lucide tidak didefinisikan ulang jika sudah ada
+            if (typeof Vue !== 'undefined' && typeof LucideVueNext !== 'undefined') {
+                const { createApp, ref } = Vue;
+                const { Trash2Icon, LoaderIcon, CheckCircleIcon, AlertCircleIcon, XIcon, HeartIcon, GithubIcon } = LucideVueNext;
+
+                // Definisi komponen App
+                const App = Vue.defineComponent({
+                    components: {
+                        Trash2Icon,
+                        LoaderIcon,
+                        CheckCircleIcon,
+                        AlertCircleIcon,
+                        XIcon,
+                        HeartIcon,
+                        GithubIcon
+                    },
+                    // Template dimodifikasi untuk menyertakan tombol kembali
+                    template: `
+                        <div class="webhook-deleter">
+                            <div class="card">
+                                <h1 class="title">Discord Webhook Deleter</h1>
+                                <div class="input-group">
+                                    <label for="webhook-url">Enter Webhook URL:</label>
+                                    <input
+                                        id="webhook-url"
+                                        v-model="webhookUrl"
+                                        type="text"
+                                        placeholder="discord.com/api/webhooks/..."
+                                    >
+                                </div>
+                                <button @click="deleteWebhook" class="delete-btn" :disabled="isDeleting">
+                                    <Trash2Icon v-if="!isDeleting" class="icon" />
+                                    <LoaderIcon v-else class="icon animate-spin" />
+                                    {{ isDeleting ? 'Deleting...' : 'Delete Webhook' }}
+                                </button>
+                                <TransitionGroup name="fade">
+                                    <div v-if="status === 'success'" key="success" class="alert success" role="alert">
+                                        <CheckCircleIcon class="icon" />
+                                        <div>
+                                            <strong>Success!</strong> The webhook has been successfully deleted.
+                                        </div>
+                                        <button @click="resetStatus" class="close-btn" aria-label="Close">
+                                            <XIcon class="icon" />
+                                        </button>
+                                    </div>
+                                    <div v-if="status === 'error'" key="error" class="alert error" role="alert">
+                                        <AlertCircleIcon class="icon" />
+                                        <div>
+                                            <strong>Error:</strong> {{ errorMessage }}
+                                        </div>
+                                        <button @click="resetStatus" class="close-btn" aria-label="Close">
+                                            <XIcon class="icon" />
+                                        </button>
+                                    </div>
+                                </TransitionGroup>
+
+                                <button @click="goHome" class="back-button" style="margin-top: 1rem;">
+                                    Kembali ke Menu
+                                </button>
+                                
+                                <footer class="footer">
+                                    <p>CREATED BY ALIEN SAMP</p>
+                                    <a href="https://github.com/spreeehertz/webhook-deleter" target="_blank" rel="noopener noreferrer">
+                                        <GithubIcon class="icon" />
+                                    </a>
+                                </footer>
+                            </div>
+                        </div>
+                    `,
+                    setup() {
+                        const webhookUrl = ref('');
+                        const status = ref('idle');
+                        const errorMessage = ref('');
+                        const isDeleting = ref(false);
+
+                        const deleteWebhook = async () => {
+                            if (!webhookUrl.value) {
+                                status.value = 'error';
+                                errorMessage.value = 'Please enter a webhook URL.';
+                                return;
+                            }
+                            const expression = "^https://([a-z0-9-]+\\.)?discord\\.com/api/.*";
+                            const regex = new RegExp(expression);
+                            if (!webhookUrl.value.match(regex)) {
+                                status.value = 'error';
+                                errorMessage.value = 'Not a valid Discord webhook URL. Note: The webhook token is required.';
+                                return;
+                            }
+                            isDeleting.value = true;
+                            try {
+                                const response = await fetch(webhookUrl.value, { method: 'DELETE' });
+                                console.log(response);
+                                if (response.status === 404) throw new Error("This webhook does not exist (maybe you've already deleted it).");
+                                if (!response.ok) throw new Error(`Failed to delete webhook.`);
+                                status.value = 'success';
+                                webhookUrl.value = '';
+                            } catch (error) {
+                                status.value = 'error';
+                                errorMessage.value = error instanceof Error ? error.message : 'An unknown error occurred';
+                            } finally {
+                                isDeleting.value = false;
+                            }
+                        };
+
+                        const resetStatus = () => {
+                            status.value = 'idle';
+                            errorMessage.value = '';
+                        };
+
+                        // FUNGSI UNTUK KEMBALI KE MENU
+                        const goHome = () => {
+                            // Memanggil fungsi global showPage()
+                            showPage('pageMainMenu');
+                        };
+
+                        return {
+                            webhookUrl,
+                            status,
+                            errorMessage,
+                            isDeleting,
+                            deleteWebhook,
+                            resetStatus,
+                            goHome // Mengekspos fungsi goHome ke template
+                        };
+                    }
+                });
+
+                // Mount aplikasi Vue ke div #app
+                createApp(App).mount('#app');
+            }
+        </script>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Tampilkan halaman yang dipilih
+            const pageToShow = document.getElementById(pageId);
+            if (pageToShow) {
+                // Gunakan 'flex' karena style global body menggunakannya untuk centering
+                pageToShow.style.display = 'flex';
+            }
+        }
+    </script>
+
+</body>
+</html>
