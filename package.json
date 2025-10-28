@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview" 
     // TIDAK ADA KOMA di sini
-  }, 
+  } 
   // TIDAK ADA KOMA di sini jika ini properti terakhir sebelum "devDependencies"
   "devDependencies": {
     "vite": "^5.0.0" 
