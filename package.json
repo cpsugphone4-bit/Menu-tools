@@ -6,13 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
-  },
+    "preview": "vite preview" 
+    // TIDAK ADA KOMA di sini
+  }, 
+  // TIDAK ADA KOMA di sini jika ini properti terakhir sebelum "devDependencies"
   "devDependencies": {
     "vite": "^5.0.0" 
-    
-    // Jika Anda menggunakan Vue secara lokal (bukan dari CDN), 
-    // Anda akan membutuhkan "vue" di sini. Tapi karena Anda menggunakan CDN, 
-    // `vite` saja sudah cukup untuk menjalankan perintah build.
+    // TIDAK ADA KOMA di sini
   }
 }
