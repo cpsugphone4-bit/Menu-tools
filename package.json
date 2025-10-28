@@ -1,0 +1,18 @@
+{
+  "name": "all-in-one-webhook-tools",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0" 
+    
+    // Jika Anda menggunakan Vue secara lokal (bukan dari CDN), 
+    // Anda akan membutuhkan "vue" di sini. Tapi karena Anda menggunakan CDN, 
+    // `vite` saja sudah cukup untuk menjalankan perintah build.
+  }
+}
