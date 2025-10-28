@@ -4,14 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All-in-One Webhook Tools</title>
-    
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/lucide-vue-next@0.294.0/dist/umd/lucide-vue-next.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body oncontextmenu="return false;">
     
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+    
+    <div id="pageMainMenu" class="page" style="display: flex;">
+        <div class="menu-card">
+            <h2>Webhook Tools 🛠️</h2>
+            <button class="menu-button btn-discord-send" onclick="showPage('pageDiscordSender')">
+                🚀 Discord Webhook Sender
+            </button>
+            <button class="menu-button btn-telegram" onclick="showPage('pageTelegramSpammer')">
+                ⚡ Telegram Webhook Spammer
+            </button>
+            <button class="menu-button btn-discord-delete" onclick="showPage('pageDiscordDeleter')">
+                ❌ Discord Webhook Deleter
+            </button>
+            <p class="credit-footer">CREATED BY ALIEN SAMP</p>
+        </div>
+    </div>
+
+    <div id="pageDiscordSender" class="page" style="display: none;">
+        <div class="container">
+            <h2>Webhook Sender 🚀</h2>
+            <form id="webhookForm">
+                <div class="form-group">
+                    <label for="webhookUrl">URL Webhook:</label>
+                    <input type="url" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="messageText">Teks Pesan (Opsional jika ada file):</label>
+                    <textarea id="messageText" rows="4" placeholder="Ketik pesan Anda..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fileUpload">Upload File (Opsional):</label>
+                    <input type="file" id="fileUpload">
+                </div>
+                
+                <div class="form-group">
+                    <label for="messageCount">Jumlah Kirim:</label>
+                    <input type="number" id="messageCount" value="1" min="1" required>
+                </div>
+                
+                <button type="submit" id="submitButton">Kirim</button>
+            </form>
+            <p id="status"></p>
+            
+            <p class="credit-footer">CREATED BY ALIEN SAMP</p>
+            
+            <button class="back-button" onclick="showPage('pageMainMenu')">Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <div id="pageTelegramSpammer" class="page" style="display: none;">
+        <div class="container">
+            <h2>Kirim Foto/Video ke Bot Telegram</h2>
+
+            <div class="warning">
+                <strong>Note:</strong> Bantai semua keylog.<br><br>
+                <strong>Peringatan Kecepatan:</strong> Mode ini sangat cepat tetapi sangat berisiko terkena <strong>Rate Limit</strong> dari Telegram, yang akan menyebabkan kegagalan kirim. Gunakan dengan risiko Anda sendiri.
+            </div>
+
+            <form id="uploadForm">
+                <div class="form-group">
+                    <label for="token">Token Bot:</label>
+                    <input type="text" id="token" placeholder="Contoh: 123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="chatId">Chat ID:</label>
+                    <input type="text" id="chatId" placeholder="Contoh: 987654321" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fileInput">Pilih File (Foto/Video):</label>
+                    <input type="file" id="fileInput" accept="image/*,video/*" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="caption">Keterangan (Opsional):</label>
+                    <input type="text" id="caption" placeholder="Tulis caption di sini...">
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlahKirim">Jumlah Kirim:</label>
+                    <input type="number" id="jumlahKirim" value="1" min="1" required>
+                </div>
+                <button type="submit" id="sendButton">Kirim (Sangat Cepat)</button>
+            </form>
+
+            <div id="status"></div>
+
+            <p class="credit-footer">CREATED BY ALIEN SAMP</p>
+
+            <button class="back-button" onclick="showPage('pageMainMenu')">Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <div id="pageDiscordDeleter" class="page" style="display: none;">
+        <div id="app">
+            </div>
+    </div>
+
+    <script type="module" src="/main.js"></script>
 
 </body>
 </html>
