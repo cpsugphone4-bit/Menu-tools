@@ -6,12 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview" 
-    // TIDAK ADA KOMA di sini
-  } 
-  // TIDAK ADA KOMA di sini jika ini properti terakhir sebelum "devDependencies"
+    "preview": "vite preview",  // <-- SANGAT MUNGKIN KOMALAH INI PENYEBABNYA
+  }, // <-- ATAU KOMALAH INI (JIKA 'devDependencies' ADA DI BAWAHNYA)
   "devDependencies": {
     "vite": "^5.0.0" 
-    // TIDAK ADA KOMA di sini
   }
 }
